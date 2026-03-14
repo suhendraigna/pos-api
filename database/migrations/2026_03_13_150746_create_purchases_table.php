@@ -26,7 +26,7 @@ return new class extends Migration
 
             $table->decimal('total', 14, 2);
 
-            $table->enum('status', ['pending', 'completed' . 'cancelled'])
+            $table->enum('status', ['pending', 'completed', 'cancelled'])
                 ->default('pending');
 
             $table->timestamps();
