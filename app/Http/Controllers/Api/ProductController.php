@@ -25,10 +25,10 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->Validate([
+        $validated = $request->validate([
             'store_id' => 'required|exists:stores,id',
             'category_id' => 'required|exists:categories,id',
-            'name' => 'required|string|mx:255',
+            'name' => 'required|string|max:255',
             'sku' => 'required|string|max:255|unique:products,sku',
             'barcode' => 'nullable|string|unique:products,barcode',
             'price' => 'required|numeric|min:0',
@@ -60,12 +60,12 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        $validated = $request->validated([
+        $validated = $request->validate([
             'store_id' => 'required|exists:stores,id',
             'category_id' => 'required|exists:categories,id',
             'name' => 'required|string|max:255',
-            'sku' => 'required|string|max:255|unique:products,sku',
-            'barcode' => 'nullable|string|unique:products,barcode',
+            'sku' => 'required|string|max:255|unique:products,sku'. $product->id,
+            'barcode' => 'nullable|string|unique:products,barcode'. $product->id,
             'price' => 'required|numeric|min:0',
             'cost_price' => 'nullable|numeric|min:0',
             'stock' => 'required|integer|min:0',
@@ -74,7 +74,7 @@ class ProductController extends Controller
 
         $product->update($validated);
 
-        return response->json([
+        return response()->json([
             'message' => 'Product updated successfully',
             'data' => $product
         ]);
