@@ -6,10 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 use App\Http\Resources\StoreResource;
-use App\Http\Resources\SupplierResource;
-use App\Http\Resources\PurchaseItemResource;
+use App\Http\Resources\PurchaseResource;
 
-class PurchaseResource extends JsonResource
+class SupplierResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -21,16 +20,13 @@ class PurchaseResource extends JsonResource
         return [
             'id' => $this->id,
             'store_id' => $this->store_id,
-            'invoice_number' => $this->invoice_number,
-            'total' => $this->total,
-            'status' => $this->status,
-
-            'formatted_total' => number_format($this->total),
+            'name' => $this->name,
+            'phone' => $this->phone,
+            'address' => $this->address,
 
             'store' => new StoreResource($this->whenLoaded('store')),
-            'supplier' => new SupplierResource($this->whenLoaded('supplier')),
-            'items' => PurchaseItemResource::collection(
-                $this->whenLoaded('items')
+            'purchases' => PurchaseResource::collection(
+                $this->whenLoaded('purchases')
             ),
 
             'created_at' => $this->created_at?->toDateTimeString(),

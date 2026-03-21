@@ -4,7 +4,11 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+
 use App\Models\Product;
+use App\Http\Resources\ProductResource;
+use App\Http\Requests\StoreProductRequest;
+use App\Http\Requests\UpdateProductRequest;
 
 class ProductController extends Controller
 {
@@ -13,11 +17,13 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::with(['store', 'category'])
-            ->latest()
-            ->paginate(20);
+        $query = Product::query();
 
-        return response()->json($products);
+        if($request->filled('is_active')){
+            $query->where('is_active', $request->boolean('is_active'));
+        }
+
+
     }
 
     /**
